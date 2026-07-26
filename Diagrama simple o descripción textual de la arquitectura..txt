@@ -1,0 +1,43 @@
+Proyecto Final: Mesa de Ayuda IA para Recursos Humanos (Patito S.A.)
+
+Protototipo inteligente de mesa de ayuda para Recursos Humanos desarrollado con LangChain, Google Gemini y RAG (Retrieval-Augmented Generation). El sistema coordina múltiples agentes especializados para resolver consultas de los colaboradores y registrar solicitudes operativas de forma automatizada
+
+1.- Arquitectura Conceptual
+
+USUARIO
+                            │
+                            ▼
+                      ORQUESTADOR
+                            │
+              ┌─────────────┼─────────────┐
+              ▼             ▼             ▼
+         BENEFICIOS      POLÍTICAS    RECLUTAMIENTO
+            RAG             RAG           RAG
+              │             │             │
+              └─────────────┼─────────────┘
+                            │
+                            ▼
+                    AGENTE DE ACCIÓN
+                            │
+                            ▼
+                registrar_solicitud()
+                            │
+                            ▼
+              registro_solicitudes_rrhh.txt
+                            │
+                            ▼
+                     RESPUESTA FINAL
+
+
+El Flujo Conceptual de la Arquitectura
+Usuario: Es el punto de entrada del sistema. El colaborador ingresa su consulta o solicitud en lenguaje natural a través de la interfaz.
+
+Orquestador (El Director): Funciona como el núcleo inteligente de enrutamiento. Recibe la petición del usuario, analiza su intención mediante un System Prompt especializado y decide exactamente a qué componente debe derivarla. 
+
+ Agentes Especializados RAG (Beneficios, Políticas, Reclutamiento): Son sub-agentes expertos en dominios específicos. Utilizan la tecnología RAG (recuperación de información en documentos corporativos combinada con modelos de lenguaje) para buscar respuestas precisas en las bases de conocimiento de la empresa sin inventar datos. 
+
+Agente de Acción (registrar_solicitud()): A diferencia de los agentes RAG que solo leen e informan, este componente tiene capacidad operativa (Tool Use). Se encarga de procesar transacciones ejecutando la función de registro para almacenar solicitudes formales. 
+
+ Persistencia (registro_solicitudes_rrhh.txt): Es el repositorio físico o archivo plano donde se guardan de forma permanente y ordenada todas las solicitudes procesadas por el agente de acción, incorporando salvaguardas para evitar duplicidades. 
+
+ Respuesta Final: Es el output consolidado que el sistema devuelve al usuario, habiendo respondido su duda mediante RAG o confirmado la ejecución de su solicitud operativa.  
