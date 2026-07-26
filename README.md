@@ -144,19 +144,12 @@ OBSERVACION: Si en “Registro” en la primera ejecución del proyecto sale FAL
 
 
 
-
-
-
-6. Agente RAG — Beneficios y Compensaciones
-
+#6. Agente RAG — Beneficios y Compensaciones
 Este módulo procesa la base de conocimiento documental para habilitar respuestas precisas fundamentadas en el contexto corporativo. A continuación, ejecute cada una de las celdas detalladas en esta sección y verifique el resultado esperado:
 
 6.1 Carga del documento
 Ejecuta esta celda:
- ============================================================
  CARGA DEL DOCUMENTO DE BENEFICIOS Y COMPENSACIONES
- ============================================================
-
  Carga el documento de Beneficios y Compensaciones.
  La ruta se obtiene desde la configuración central del proyecto.
 
@@ -179,10 +172,8 @@ DOCUMENTO DE BENEFICIOS Y COMPENSACIONES CARGADO CORRECTAMENTE.
 Ejecuta esta celda: 
 import re
 
- ============================================================
- PROCESAMIENTO DEL DOCUMENTO DE BENEFICIOS Y COMPENSACIONES
- ============================================================
 
+ PROCESAMIENTO DEL DOCUMENTO DE BENEFICIOS Y COMPENSACIONES
  1. Leemos el contenido completo del archivo de texto.
  La ruta se obtiene desde la configuración central del proyecto.
 with open(RUTA_DOCUMENTO_BENEFICIOS, "r", encoding="utf-8") as f:
