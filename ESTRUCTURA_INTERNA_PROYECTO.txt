@@ -1,0 +1,45 @@
+1. Introducción
+2. Instalación de librerías
+3. Importación de librerías
+4. Configuración de la API de Google Gemini
+5. Configuración de modelos de IA
+5.1 Configuración central de rutas
+
+6. Agente RAG — Beneficios y Compensaciones
+   6.1 Carga del documento
+   6.2 Chunking
+   6.3 Embeddings + Chroma
+   6.4 Retriever
+   6.5 Creación del Prompt del Agente RAG de Beneficios y Compensaciones 
+   6.6 Creación del Agente RAG
+
+7. Agente RAG — Políticas Internas
+   7.1 Carga del documento
+   7.2 Chunking
+   7.3 Embeddings + Chroma
+   7.4 Retriever
+   7.5  Creación del Prompt del Agente de Reglamento Interno
+   7.6 Creación del Agente RAG
+
+8. Agente RAG — Reclutamiento y Onboarding
+   8.1 Carga del documento
+   8.2 Chunking
+   8.3 Embeddings + Chroma
+   8.4 Retriever
+   8.5 Creación del Prompt del Agente de Reclutamiento y Onboarding
+   8.6 Creación del Agente RAG
+
+9. Agente de Acción — Registro de solicitudes
+      Creación de la herramienta
+      Validaciones y salvaguardas ( SE PUSO UN "SALVAGUARDAS" PARA EVITAR DUPLICADOS)
+    
+    
+10. Orquestador Central
+    10.1 Creación del orquestador central
+         Definición de @tools
+         SYSTEM PROMPT DEL ORQUESTADOR
+
+11. Mini App
+     Interfaz
+     Integración con el orquestador
+     Pruebas finales
