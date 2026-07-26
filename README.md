@@ -1,42 +1,44 @@
 # Proyecto-Final_CODE_TEAM
-1. Introducción
+#1. Introducción
 El presente proyecto implementa un prototipo inteligente de mesa de ayuda para Recursos Humanos en Patito S.A. utilizando LangChain, Google Gemini y tecnología RAG (Retrieval-Augmented Generation). El sistema está diseñado para actuar como un asistente corporativo estructurado, capaz de coordinar múltiples agentes especializados para resolver consultas normativas y registrar solicitudes operativas de manera automatizada. 
-2. Instalación de Librerías
+
+#2. Instalación de Librerías
 Para configurar el entorno de ejecución, ejecute la siguiente celda con el fin de instalar las dependencias principales que soportan la arquitectura de LangChain, la integración con Google Gemini y la persistencia vectorial: 
-%pip install -U langchain langchain-google-genai langchain-community langchain-chroma chromadb python-dotenv ipywidgets3. Importación de Librerías
+
+%pip install -U langchain langchain-google-genai langchain-community langchain-chroma chromadb python-dotenv ipywidgets
 
 Resultado esperado:
 [NOTICE] A NEW RELEASE OF PIP IS AVAILABLE: 24.0 -> 26.1.2
 [NOTICE] TO UPDATE, RUN: PYTHON.EXE -M PIP INSTALL --UPGRADE PIP
 
-3 . Importación de Librerías
+#3 . Importación de Librerías
 Ejecuta esta celda : 
-# Importa os para trabajar con variables de entorno
-# y acceder de forma segura a la GOOGLE_API_KEY.
+ Importa os para trabajar con variables de entorno
+ y acceder de forma segura a la GOOGLE_API_KEY.
 import os
 
-# Permite cargar las variables de entorno almacenadas
-# en el archivo .env.
+ Permite cargar las variables de entorno almacenadas
+en el archivo .env.
 from dotenv import load_dotenv
 
-# Modelo de lenguaje de Google Gemini que utilizaremos
-# para generar las respuestas de nuestros agentes y orquestador.
+Modelo de lenguaje de Google Gemini que utilizaremos
+ para generar las respuestas de nuestros agentes y orquestador.
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-# Modelo de embeddings de Google Gemini que utilizaremos
-# para convertir los documentos en vectores.
+ Modelo de embeddings de Google Gemini que utilizaremos
+ para convertir los documentos en vectores.
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
-# Permite cargar los documentos de texto (.txt)
-# que utilizaremos como bases de conocimiento.
+ Permite cargar los documentos de texto (.txt)
+ que utilizaremos como bases de conocimiento.
 from langchain_community.document_loaders import TextLoader
 
-# Permite dividir los documentos en fragmentos (chunks)
-# antes de generar los embeddings.
+ Permite dividir los documentos en fragmentos (chunks)
+ antes de generar los embeddings.
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-# Permite utilizar Chroma como vector store
-# para almacenar y buscar los embeddings.
+ Permite utilizar Chroma como vector store
+ para almacenar y buscar los embeddings.
 from langchain_chroma import Chroma
 print("Librerías importadas correctamente.")
 
@@ -44,8 +46,9 @@ y espera este resultado:
 LIBRERÍAS IMPORTADAS CORRECTAMENTE.
 
 
-4. Configuración de la API de Google Gemini
+#4. Configuración de la API de Google Gemini
 Para permitir la comunicación segura con los modelos de lenguaje, es necesario configurar la clave de acceso (GOOGLE_API_KEY) utilizando un archivo de entorno .env. 
+
 4.1 — Creación del archivo .env
 Ejecuta esta celda : 
 4A
@@ -82,9 +85,6 @@ os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
 print("GOOGLE_API_KEY configurada correctamente.")
 •	Resultado esperado:
 GOOGLE_API_KEY CONFIGURADA CORRECTAMENTE.
-
-
-
 
 
 5. Configuración de Modelos de IA
@@ -148,23 +148,23 @@ Este módulo procesa la base de conocimiento documental para habilitar respuesta
 
 •	6.1 Carga del documento
 Ejecuta esta celda:
-# ============================================================
-# CARGA DEL DOCUMENTO DE BENEFICIOS Y COMPENSACIONES
-# ============================================================
+ ============================================================
+ CARGA DEL DOCUMENTO DE BENEFICIOS Y COMPENSACIONES
+ ============================================================
 
-# Carga el documento de Beneficios y Compensaciones.
-# La ruta se obtiene desde la configuración central del proyecto.
+ Carga el documento de Beneficios y Compensaciones.
+ La ruta se obtiene desde la configuración central del proyecto.
 
 loader_beneficios = TextLoader(
     str(RUTA_DOCUMENTO_BENEFICIOS),
     encoding="utf-8"
 )
 
-# Lee el contenido del documento y lo convierte
-# en documentos que podremos procesar posteriormente.
+ Lee el contenido del documento y lo convierte
+ en documentos que podremos procesar posteriormente.
 documentos_beneficios = loader_beneficios.load()
 
-# Muestra un mensaje para confirmar que el documento fue cargado.
+ Muestra un mensaje para confirmar que el documento fue cargado.
 print("Documento de Beneficios y Compensaciones cargado correctamente.") 
 
 Resultado esperado:
@@ -174,22 +174,22 @@ DOCUMENTO DE BENEFICIOS Y COMPENSACIONES CARGADO CORRECTAMENTE.
 Ejecuta esta celda: 
 import re
 
-# ============================================================
-# PROCESAMIENTO DEL DOCUMENTO DE BENEFICIOS Y COMPENSACIONES
-# ============================================================
+ ============================================================
+ PROCESAMIENTO DEL DOCUMENTO DE BENEFICIOS Y COMPENSACIONES
+ ============================================================
 
-# 1. Leemos el contenido completo del archivo de texto.
-# La ruta se obtiene desde la configuración central del proyecto.
+ 1. Leemos el contenido completo del archivo de texto.
+ La ruta se obtiene desde la configuración central del proyecto.
 with open(RUTA_DOCUMENTO_BENEFICIOS, "r", encoding="utf-8") as f:
     texto_beneficios = f.read()
 
 
-# 2. Función de partición exacta para los bloques principales
-#    (1., 2., 3., 4.)
+ 2. Función de partición exacta para los bloques principales
+    (1., 2., 3., 4.)
 def chunkear_beneficios(texto):
 
-    # Busca los números principales seguidos de punto y un espacio
-    # al inicio de la línea (ej: "1. ", "2. ")
+     Busca los números principales seguidos de punto y un espacio
+     al inicio de la línea (ej: "1. ", "2. ")
     cabeceras = list(
         re.finditer(
             r"^\d+\.\s+[A-ZÁÉÍÓÚÑ\s]+$",
@@ -221,7 +221,7 @@ def chunkear_beneficios(texto):
 lista_textos_chunks = chunkear_beneficios(texto_beneficios)
 
 
-# 3. Validación y estadísticas
+#3. Validación y estadísticas
 
 if len(lista_textos_chunks) > 0:
 
@@ -279,38 +279,31 @@ Inicio de cada chunk:
   ch_03: 4. COMPENSACIÓN La estructura salarial considera el rol...
 
 
-
-
-
-
-
-
 •	6.3 Embeddings + Chroma: Transformación vectorial de los fragmentos y almacenamiento persistente en ChromaDB.
 Ejecuta esta celda:
 import os
 
-# ============================================================
-# GENERACIÓN DE EMBEDDINGS Y CREACIÓN DEL VECTOR STORE
-# ============================================================
+ ============================================================
+ GENERACIÓN DE EMBEDDINGS Y CREACIÓN DEL VECTOR STORE
+ ============================================================
 
-# La ruta del Vector Store se obtiene desde la configuración
-# central de rutas del proyecto:
-#
-# RUTA_VECTORSTORE_BENEFICIOS
-#
-# Esta ruta corresponde a:
-# MI PROYECTO/Vectorstores/beneficios_compensaciones
+ La ruta del Vector Store se obtiene desde la configuración
+ central de rutas del proyecto:
+
+ RUTA_VECTORSTORE_BENEFICIOS
+
+ Esta ruta corresponde a:
+ MI PROYECTO/Vectorstores/beneficios_compensaciones
 
 
-# ============================================================
-# 1. CREAR LA CARPETA DEL VECTOR STORE SI NO EXISTE
-# ============================================================
+ ============================================================
+ 1. CREAR LA CARPETA DEL VECTOR STORE SI NO EXISTE
+ ============================================================
 
-# Crea la carpeta del Vector Store y todas las carpetas
-# necesarias que no existan.
-#
-# exist_ok=True evita que aparezca un error si la carpeta
-# ya existe.
+ Crea la carpeta del Vector Store y todas las carpetas necesarias que no existan.
+
+ exist_ok=True evita que aparezca un error si la carpeta
+ ya existe.
 
 os.makedirs(
     RUTA_VECTORSTORE_BENEFICIOS,
@@ -318,29 +311,29 @@ os.makedirs(
 )
 
 
-# ============================================================
-# 2. CREAR EL MODELO DE EMBEDDINGS
-# ============================================================
+ ============================================================
+ 2. CREAR EL MODELO DE EMBEDDINGS
+ ============================================================
 
-# Crea el modelo de embeddings de Google Gemini.
-# Este modelo convierte cada chunk del documento en una
-# representación vectorial que puede ser almacenada
-# y consultada posteriormente.
+ Crea el modelo de embeddings de Google Gemini.
+ Este modelo convierte cada chunk del documento en una
+ representación vectorial que puede ser almacenada
+ y consultada posteriormente.
 
 embeddings = GoogleGenerativeAIEmbeddings(
     model=MODELO_EMBEDDING
 )
 
 
-# ============================================================
-# 3. CREAR EL VECTOR STORE DE CHROMA
-# ============================================================
+ ============================================================
+ 3. CREAR EL VECTOR STORE DE CHROMA
+ ============================================================
 
-# Convierte los chunks del documento en embeddings y los
-# almacena en una base vectorial de Chroma.
-#
-# Este Vector Store pertenece exclusivamente al agente
-# de Beneficios y Compensaciones.
+ Convierte los chunks del documento en embeddings y los
+ almacena en una base vectorial de Chroma.
+
+ Este Vector Store pertenece exclusivamente al agente
+ de Beneficios y Compensaciones.
 
 vectorstore_beneficios = Chroma.from_documents(
     documents=chunks_beneficios,
@@ -349,9 +342,9 @@ vectorstore_beneficios = Chroma.from_documents(
 )
 
 
-# ============================================================
-# 4. VERIFICAR QUE EL PROCESO TERMINÓ CORRECTAMENTE
-# ============================================================
+ ============================================================
+ 4. VERIFICAR QUE EL PROCESO TERMINÓ CORRECTAMENTE
+ ============================================================
 
 print(
     "Vector Store de Beneficios y Compensaciones "
@@ -362,7 +355,7 @@ print("\nRuta del Vector Store:")
 print(RUTA_VECTORSTORE_BENEFICIOS)
 
 
-# Muestra los archivos creados por Chroma.
+ Muestra los archivos creados por Chroma.
 print("\nContenido generado por Chroma:")
 
 for archivo in os.listdir(RUTA_VECTORSTORE_BENEFICIOS):
@@ -383,23 +376,23 @@ CONTENIDO GENERADO POR CHROMA:
 
 
 
-•	6.4 Retriever: Configuración del recuperador de similitud para extraer los fragmentos más relevantes ante una consulta.
-# ============================================================
-# 1. CREACIÓN DEL RETRIEVER
-# ============================================================
+#6.4 Retriever: Configuración del recuperador de similitud para extraer los fragmentos más relevantes ante una consulta.
+ ============================================================
+ 1. CREACIÓN DEL RETRIEVER
+ ============================================================
 
-# Convierte el Vector Store en un Retriever.
-# El Retriever permite realizar búsquedas semánticas
-# dentro de la base de conocimiento del agente.
+ Convierte el Vector Store en un Retriever.
+ El Retriever permite realizar búsquedas semánticas
+ dentro de la base de conocimiento del agente.
 
 retriever_beneficios = vectorstore_beneficios.as_retriever(
     search_kwargs={"k": 5}
 )
 
 
-# ============================================================
-# 2. VERIFICACIÓN DEL RETRIEVER
-# ============================================================
+ ============================================================
+ 2. VERIFICACIÓN DEL RETRIEVER
+ ============================================================
 
 print(
     "Retriever de Beneficios y Compensaciones "
@@ -414,13 +407,13 @@ RESULTADO ESPERADO:
 RETRIEVER DE BENEFICIOS Y COMPENSACIONES CREADO CORRECTAMENTE.
 CANTIDAD DE DOCUMENTOS RECUPERADOS POR CONSULTA: 5
 
-•	6.5 Creación del Prompt del Agente RAG de Beneficios y Compensaciones: Definición de directrices estrictas para limitar las respuestas al contexto provisto.
-# ============================================================
-# 1. PROMPT DEL AGENTE DE BENEFICIOS Y COMPENSACIONES
-# ============================================================
+	6.5 Creación del Prompt del Agente RAG de Beneficios y Compensaciones: Definición de directrices estrictas para limitar las respuestas al contexto provisto.
+ ============================================================
+ 1. PROMPT DEL AGENTE DE BENEFICIOS Y COMPENSACIONES
+ ============================================================
 
-# Define las instrucciones que seguirá el agente RAG.
-# El contexto será proporcionado posteriormente por el Retriever.
+ Define las instrucciones que seguirá el agente RAG.
+ El contexto será proporcionado posteriormente por el Retriever.
 
 PROMPT_BENEFICIOS = """
 Eres el Agente de Beneficios y Compensaciones de PATITO S.A.
@@ -466,15 +459,12 @@ RESPUESTA:
 """
 
 
-# ============================================================
-# 2. VERIFICACIÓN DEL PROMPT
-# ============================================================
+ ============================================================
+ 2. VERIFICACIÓN DEL PROMPT
+ ============================================================
 
 print("Prompt del Agente de Beneficios y Compensaciones creado correctamente.")
 print("El prompt incluye las reglas de uso exclusivo de la base documental.")
-
-
-
 
 
 RESULTADO ESPERADO:
@@ -482,13 +472,13 @@ PROMPT DEL AGENTE DE BENEFICIOS Y COMPENSACIONES CREADO CORRECTAMENTE.
 EL PROMPT INCLUYE LAS REGLAS DE USO EXCLUSIVO DE LA BASE DOCUMENTAL.
 
 •	6.6 Creación del Agente RAG: Instanciación formal del agente consultor
-# ============================================================
-# 1. CREACIÓN DEL MODELO DE LENGUAJE
-# ============================================================
+ ============================================================
+ 1. CREACIÓN DEL MODELO DE LENGUAJE
+ ============================================================
 
-# Inicializa el modelo de lenguaje de Google Gemini.
-# Este modelo será utilizado para generar las respuestas
-# del Agente de Beneficios y Compensaciones.
+ Inicializa el modelo de lenguaje de Google Gemini.
+ Este modelo será utilizado para generar las respuestas
+ del Agente de Beneficios y Compensaciones.
 
 llm_beneficios = ChatGoogleGenerativeAI(
     model=MODELO_LLM,
@@ -496,9 +486,9 @@ llm_beneficios = ChatGoogleGenerativeAI(
 )
 
 
-# ============================================================
-# 2. FUNCIÓN DEL AGENTE RAG
-# ============================================================
+ ============================================================
+ 2. FUNCIÓN DEL AGENTE RAG
+ ============================================================
 
 def agente_beneficios(pregunta):
     """
@@ -555,9 +545,9 @@ def agente_beneficios(pregunta):
     return respuesta.content
 
 
-# ============================================================
-# 3. VERIFICACIÓN DEL AGENTE
-# ============================================================
+ ============================================================
+ 3. VERIFICACIÓN DEL AGENTE
+ ============================================================
 
 print("Agente RAG de Beneficios y Compensaciones creado correctamente.")
 
@@ -565,12 +555,9 @@ RESULTADO ESPERADO:
 AGENTE RAG DE BENEFICIOS Y COMPENSACIONES CREADO CORRECTAMENTE.
 
 
-
-
-
-
-
 	Nota metodológica: Los agentes 7 (Reglamento Interno) y 8 (Reclutamiento y Onboarding) se configuran siguiendo exactamente los mismos pasos operativos (6.1 al 6.5), modificando únicamente las rutas de origen documental y los metadatos específicos del dominio.
+
+
 9. Agente de Acción — Registro de solicitudes
 Este componente gestiona las transacciones operativas del sistema registrando solicitudes formales de los colaboradores.
 9.1. Creación de la herramienta de registro de solicitudes
@@ -579,9 +566,9 @@ import uuid
 from datetime import datetime, timedelta
 from pathlib import Path
 
-# ============================================================
-#   HERRAMIENTA DE ACCIÓN (REGISTRO DE SOLICITUDES)
-# ============================================================
+ ============================================================
+   HERRAMIENTA DE ACCIÓN (REGISTRO DE SOLICITUDES)
+ ============================================================
 
 def registrar_solicitud(
     tipo_solicitud: str,
@@ -623,13 +610,13 @@ from langchain.agents import create_agent
 from langgraph.checkpoint.memory import InMemorySaver
 from langchain.tools import tool
 
-# ============================================================
-#  EL ORQUESTADOR CENTRAL DE RECURSOS HUMANOS
-# ============================================================
+ ============================================================
+  EL ORQUESTADOR CENTRAL DE RECURSOS HUMANOS
+ ============================================================
 
-# ============================================================
-# 1. DEFINICIÓN DE LAS TOOLS 
-# ============================================================
+ ============================================================
+ 1. DEFINICIÓN DE LAS TOOLS 
+ ============================================================
 
 @tool
 def consultar_beneficios(pregunta: str) -> str:
@@ -677,6 +664,7 @@ from pathlib import Path
 from langchain.agents import create_agent
 from langgraph.checkpoint.memory import InMemorySaver
 from langchain.tools import tool
+
 RESULTADO ESPERADO:
 RUTA PRINCIPAL DEL PROYECTO: C:\USERS\USER\MI PROYECTO
 ARCHIVO DE REGISTRO VINCULADO: TRUE
