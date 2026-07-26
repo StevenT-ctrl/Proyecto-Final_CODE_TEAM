@@ -1,0 +1,2 @@
+ID: E1743DCC | Fecha: 2026-07-25 23:56:54 | Colaborador: Carlos Gómez | Tipo: Vacaciones | Detalle: Vacaciones del 2026-08-10 al 2026-08-15 (5 días), aprobadas por el Ing. Ing. Perez. | Jefe: Ing. Perez | Días: 5
+ID: BD1B5661 | Fecha: 2026-07-26 07:04:24 | Colaborador: María López | Tipo: Vacaciones | Detalle: Vacaciones del 2026-08-20 al 2026-08-25 (5 días), aprobadas por el Ing. Ing. Martínez. | Jefe: Ing. Martínez | Días: 5
