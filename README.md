@@ -65,7 +65,8 @@ with open(ruta_env_final, "w") as archivo:
     archivo.write(f"GOOGLE_API_KEY={GOOGLE_API_KEY}\n")
 
 print(f"¡Listo! Archivo .env creado correctamente en: {ruta_env_final}")
-•	Resultado esperado:
+
+Resultado esperado:
 INGRESA TU GOOGLE_API_KEY: [ENTRADA OCULTA] 
 ¡LISTO! ARCHIVO .ENV CREADO CORRECTAMENTE EN: /HOME/USER/MI PROYECTO/.ENV
 
@@ -83,7 +84,8 @@ if not GOOGLE_API_KEY:
 
 os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
 print("GOOGLE_API_KEY configurada correctamente.")
-•	Resultado esperado:
+
+Resultado esperado:
 GOOGLE_API_KEY CONFIGURADA CORRECTAMENTE.
 
 
@@ -96,12 +98,14 @@ llm = ChatGoogleGenerativeAI(model=MODELO_LLM, temperature=0)
 print("Modelo LLM:", MODELO_LLM)
 print("Modelo de Embeddings:", MODELO_EMBEDDING)
 print("Objeto LLM inicializado correctamente.")
-•	Resultado esperado:
+
+Resultado esperado:
 MODELO LLM: GEMINI-3.1-FLASH-LITE
 MODELO DE EMBEDDINGS: GEMINI-EMBEDDING-2-PREVIEW
 OBJETO LLM INICIALIZADO CORRECTAMENTE.
 
 5.1 Configuración central de rutas
+
 Ejecuta esta celda : 
 from pathlib import Path
 import os
@@ -125,7 +129,8 @@ print("Reglamento:", RUTA_DOCUMENTO_REGLAMENTO, "->", RUTA_DOCUMENTO_REGLAMENTO.
 print("Reclutamiento:", RUTA_DOCUMENTO_RECLUTAMIENTO, "->", RUTA_DOCUMENTO_RECLUTAMIENTO.exists())
 print("\nArchivo de solicitudes:")
 print("Registro:", REGISTRO_PATH, "->", REGISTRO_PATH.exists())
-•	Resultado esperado:
+
+Resultado esperado:
 Ruta principal del proyecto:
 C:\Users\USER\MI PROYECTO
 Documentos:
@@ -146,7 +151,7 @@ OBSERVACION: Si en “Registro” en la primera ejecución del proyecto sale FAL
 
 Este módulo procesa la base de conocimiento documental para habilitar respuestas precisas fundamentadas en el contexto corporativo. A continuación, ejecute cada una de las celdas detalladas en esta sección y verifique el resultado esperado:
 
-•	6.1 Carga del documento
+6.1 Carga del documento
 Ejecuta esta celda:
  ============================================================
  CARGA DEL DOCUMENTO DE BENEFICIOS Y COMPENSACIONES
@@ -170,7 +175,7 @@ print("Documento de Beneficios y Compensaciones cargado correctamente.")
 Resultado esperado:
 DOCUMENTO DE BENEFICIOS Y COMPENSACIONES CARGADO CORRECTAMENTE.
 
-•	6.2 Chunking: Segmentación estructurada del texto en bloques manejables mediante un divisor de texto recursivo.
+6.2 Chunking: Segmentación estructurada del texto en bloques manejables mediante un divisor de texto recursivo.
 Ejecuta esta celda: 
 import re
 
@@ -279,7 +284,7 @@ Inicio de cada chunk:
   ch_03: 4. COMPENSACIÓN La estructura salarial considera el rol...
 
 
-•	6.3 Embeddings + Chroma: Transformación vectorial de los fragmentos y almacenamiento persistente en ChromaDB.
+6.3 Embeddings + Chroma: Transformación vectorial de los fragmentos y almacenamiento persistente en ChromaDB.
 Ejecuta esta celda:
 import os
 
@@ -471,7 +476,7 @@ RESULTADO ESPERADO:
 PROMPT DEL AGENTE DE BENEFICIOS Y COMPENSACIONES CREADO CORRECTAMENTE.
 EL PROMPT INCLUYE LAS REGLAS DE USO EXCLUSIVO DE LA BASE DOCUMENTAL.
 
-•	6.6 Creación del Agente RAG: Instanciación formal del agente consultor
+6.6 Creación del Agente RAG: Instanciación formal del agente consultor
  ============================================================
  1. CREACIÓN DEL MODELO DE LENGUAJE
  ============================================================
