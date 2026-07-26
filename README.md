@@ -179,7 +179,6 @@ import re
 with open(RUTA_DOCUMENTO_BENEFICIOS, "r", encoding="utf-8") as f:
     texto_beneficios = f.read()
 
-
  2. Función de partición exacta para los bloques principales
     (1., 2., 3., 4.)
 def chunkear_beneficios(texto):
@@ -212,12 +211,9 @@ def chunkear_beneficios(texto):
             chunks.append(parte)
 
     return chunks
-
-
 lista_textos_chunks = chunkear_beneficios(texto_beneficios)
 
-
-#3. Validación y estadísticas
+3. Validación y estadísticas
 
 if len(lista_textos_chunks) > 0:
 
@@ -254,7 +250,7 @@ else:
     )
 
 
-# 4. Conversión a formato LangChain para Chroma
+4. Conversión a formato LangChain para Chroma
 
 from langchain_core.documents import Document
 
@@ -268,20 +264,19 @@ Total de chunks: 4
 Tamaño promedio: 280 caracteres
 Tamaño min/max: 113 / 749 caracteres
 Inicio de cada chunk:
-------------------------------------------------------------
   ch_00: 1. SEGURO MÉDICO CORPORATIVO 1.1 Cobertura: consultas m...
   ch_01: 2. BONOS - Bono por desempeño anual según evaluación. -...
   ch_02: 3. OTROS BENEFICIOS - Día libre de cumpleaños. - Capaci...
   ch_03: 4. COMPENSACIÓN La estructura salarial considera el rol...
 
 
-6.3 Embeddings + Chroma: Transformación vectorial de los fragmentos y almacenamiento persistente en ChromaDB.
+6.3 Embeddings + Chroma:
+Transformación vectorial de los fragmentos y almacenamiento persistente en ChromaDB.
 Ejecuta esta celda:
 import os
 
- ============================================================
  GENERACIÓN DE EMBEDDINGS Y CREACIÓN DEL VECTOR STORE
- ============================================================
+
 
  La ruta del Vector Store se obtiene desde la configuración
  central de rutas del proyecto:
@@ -292,9 +287,7 @@ import os
  MI PROYECTO/Vectorstores/beneficios_compensaciones
 
 
- ============================================================
  1. CREAR LA CARPETA DEL VECTOR STORE SI NO EXISTE
- ============================================================
 
  Crea la carpeta del Vector Store y todas las carpetas necesarias que no existan.
 
@@ -307,9 +300,8 @@ os.makedirs(
 )
 
 
- ============================================================
  2. CREAR EL MODELO DE EMBEDDINGS
- ============================================================
+
 
  Crea el modelo de embeddings de Google Gemini.
  Este modelo convierte cada chunk del documento en una
@@ -321,9 +313,8 @@ embeddings = GoogleGenerativeAIEmbeddings(
 )
 
 
- ============================================================
  3. CREAR EL VECTOR STORE DE CHROMA
- ============================================================
+
 
  Convierte los chunks del documento en embeddings y los
  almacena en una base vectorial de Chroma.
@@ -338,9 +329,8 @@ vectorstore_beneficios = Chroma.from_documents(
 )
 
 
- ============================================================
  4. VERIFICAR QUE EL PROCESO TERMINÓ CORRECTAMENTE
- ============================================================
+ 
 
 print(
     "Vector Store de Beneficios y Compensaciones "
@@ -369,13 +359,10 @@ CONTENIDO GENERADO POR CHROMA:
 
 
 
-
-
-
 #6.4 Retriever: Configuración del recuperador de similitud para extraer los fragmentos más relevantes ante una consulta.
- ============================================================
+
  1. CREACIÓN DEL RETRIEVER
- ============================================================
+
 
  Convierte el Vector Store en un Retriever.
  El Retriever permite realizar búsquedas semánticas
@@ -386,9 +373,8 @@ retriever_beneficios = vectorstore_beneficios.as_retriever(
 )
 
 
- ============================================================
  2. VERIFICACIÓN DEL RETRIEVER
- ============================================================
+
 
 print(
     "Retriever de Beneficios y Compensaciones "
@@ -404,9 +390,9 @@ RETRIEVER DE BENEFICIOS Y COMPENSACIONES CREADO CORRECTAMENTE.
 CANTIDAD DE DOCUMENTOS RECUPERADOS POR CONSULTA: 5
 
 	6.5 Creación del Prompt del Agente RAG de Beneficios y Compensaciones: Definición de directrices estrictas para limitar las respuestas al contexto provisto.
- ============================================================
+
  1. PROMPT DEL AGENTE DE BENEFICIOS Y COMPENSACIONES
- ============================================================
+
 
  Define las instrucciones que seguirá el agente RAG.
  El contexto será proporcionado posteriormente por el Retriever.
@@ -454,10 +440,8 @@ PREGUNTA DEL USUARIO:
 RESPUESTA:
 """
 
-
- ============================================================
  2. VERIFICACIÓN DEL PROMPT
- ============================================================
+ 
 
 print("Prompt del Agente de Beneficios y Compensaciones creado correctamente.")
 print("El prompt incluye las reglas de uso exclusivo de la base documental.")
@@ -468,9 +452,9 @@ PROMPT DEL AGENTE DE BENEFICIOS Y COMPENSACIONES CREADO CORRECTAMENTE.
 EL PROMPT INCLUYE LAS REGLAS DE USO EXCLUSIVO DE LA BASE DOCUMENTAL.
 
 6.6 Creación del Agente RAG: Instanciación formal del agente consultor
- ============================================================
+ 
  1. CREACIÓN DEL MODELO DE LENGUAJE
- ============================================================
+
 
  Inicializa el modelo de lenguaje de Google Gemini.
  Este modelo será utilizado para generar las respuestas
@@ -482,9 +466,8 @@ llm_beneficios = ChatGoogleGenerativeAI(
 )
 
 
- ============================================================
  2. FUNCIÓN DEL AGENTE RAG
- ============================================================
+
 
 def agente_beneficios(pregunta):
     """
@@ -493,57 +476,50 @@ def agente_beneficios(pregunta):
     Compensaciones y genera una respuesta utilizando Gemini.
     """
 
-    # --------------------------------------------------------
-    # Recuperar documentos relevantes
-    # --------------------------------------------------------
-
+    Recuperar documentos relevantes
+   
     documentos_relevantes = retriever_beneficios.invoke(
         pregunta
     )
 
-    # --------------------------------------------------------
-    # Verificar si se encontró información
-    # --------------------------------------------------------
+     Verificar si se encontró información
 
     if not documentos_relevantes:
         return "No encontré información suficiente en la base documental proporcionada."
 
-    # --------------------------------------------------------
-    # Unir el contenido de los documentos recuperados
-    # --------------------------------------------------------
+     Unir el contenido de los documentos recuperados
+
 
     contexto = "\n\n".join(
         documento.page_content
         for documento in documentos_relevantes
     )
 
-    # --------------------------------------------------------
-    # Construir el prompt con el contexto recuperado
-    # --------------------------------------------------------
+     Construir el prompt con el contexto recuperado
+
 
     prompt_final = PROMPT_BENEFICIOS.format(
         context=contexto,
         question=pregunta
     )
 
-    # --------------------------------------------------------
-    # Enviar el prompt al modelo Gemini
-    # --------------------------------------------------------
+    
+     Enviar el prompt al modelo Gemini
+
 
     respuesta = llm_beneficios.invoke(
         prompt_final
     )
 
-    # --------------------------------------------------------
-    # Retornar únicamente el contenido de la respuesta
-    # --------------------------------------------------------
+     
+     Retornar únicamente el contenido de la respuesta
+  
 
     return respuesta.content
 
 
- ============================================================
  3. VERIFICACIÓN DEL AGENTE
- ============================================================
+
 
 print("Agente RAG de Beneficios y Compensaciones creado correctamente.")
 
@@ -562,9 +538,9 @@ import uuid
 from datetime import datetime, timedelta
 from pathlib import Path
 
- ============================================================
+ 
    HERRAMIENTA DE ACCIÓN (REGISTRO DE SOLICITUDES)
- ============================================================
+ 
 
 def registrar_solicitud(
     tipo_solicitud: str,
@@ -606,13 +582,13 @@ from langchain.agents import create_agent
 from langgraph.checkpoint.memory import InMemorySaver
 from langchain.tools import tool
 
- ============================================================
-  EL ORQUESTADOR CENTRAL DE RECURSOS HUMANOS
- ============================================================
 
- ============================================================
+  EL ORQUESTADOR CENTRAL DE RECURSOS HUMANOS
+ 
+
+
  1. DEFINICIÓN DE LAS TOOLS 
- ============================================================
+
 
 @tool
 def consultar_beneficios(pregunta: str) -> str:
