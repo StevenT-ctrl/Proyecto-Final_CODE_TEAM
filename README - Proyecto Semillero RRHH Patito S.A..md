@@ -1,5 +1,8 @@
 # **README \- Sistema Inteligente de Mesa de Ayuda de Recursos Humanos (Patito S.A.)**
 
+
+SUBIR EL LINK PARA NO TENER PROBLEMAS AL MOMENTO DE EJECUTAR EL PROYECTO: 
+http://localhost:8888/lab/tree/MI%20PROYECTO
 ## **1\. Introducción**
 
 El presente proyecto implementa un prototipo inteligente de mesa de ayuda para Recursos Humanos en Patito S.A. utilizando LangChain, Google Gemini y tecnología RAG (Retrieval-Augmented Generation). El sistema está diseñado para actuar como un asistente corporativo estructurado, capaz de coordinar múltiples agentes especializados para resolver consultas normativas y registrar solicitudes operativas de manera automatizada.
