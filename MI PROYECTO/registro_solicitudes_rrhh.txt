@@ -1,0 +1,2 @@
+ID: FD4F7EE7 | Fecha: 2026-07-26 18:51:26 | Colaborador: Javier Morales | Tipo: Vacaciones | Detalle: Vacaciones del 2026-09-15 al 2026-09-22 (6 días), aprobadas por el Ing. Ing. Suárez. | Jefe: Ing. Suárez | Días: 6
+ID: C595C85F | Fecha: 2026-07-26 18:52:17 | Colaborador: Sofía Paredes | Tipo: Vacaciones | Detalle: Vacaciones del 2026-10-01 al 2026-10-05 (5 días), aprobadas por el Ing. Ing. Rivas. | Jefe: Ing. Rivas | Días: 5
